@@ -12,29 +12,34 @@
             <input name="username" type="text" placeholder="username">
             <input name="password" type="password" placeholder="password">
 
-            <button type="submit">Submit</button>
+            <button value="Get v1" onclick="onGet('v1')" type="submit">Submit</button>
+            <button value="Get v2" onclick="onGet('v2')" type="submit">Submit1</button>
     </form>
 
     <script>
-        const formEl = document.querySelector('.form');
+        function onGet(version) {
+            const url = "http://localhost:8000/reservations/" + version
+            
+            const formEl = document.querySelector('.form');
 
-        formEl.addEventListener('submit', () => {
-            event.preventDefault();
+            formEl.addEventListener('submit', () => {
+                event.preventDefault();
 
-            const formData = new FormData(formEl);
-            const data = Object.fromEntries(formData)
+                const formData = new FormData(formEl);
+                const data = Object.fromEntries(formData)
 
-            console.log(data);
+                console.log(data);
 
-            fetch('http://localhost:8080/reservations', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Typ' : 'application/json'
-                },
-                body: JSON.stringify(data) 
-            }).catch(error => console.log(error))
-        })
+                fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Typ' : 'application/json'
+                    },
+                    body: JSON.stringify(data) 
+                }).catch(error => console.log(error))
+            })
+        }
     </script>
 </body>
 </html>
