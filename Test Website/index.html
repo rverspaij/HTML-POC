@@ -9,34 +9,32 @@
 <body>
     <h1>Fetch API - Sending Form Data</h1>
     <form class="form" id="myForm">
-        <label for="inp_username">Username</label>
-        <input type="text" name="inp_username" id="inp_username">
-        <label for="inp_password">Password</label>
-        <input type="password" name="inp_password" id="inp_password">
-        <button type="submit">Login</button>
+            <input name="username" type="text" placeholder="username">
+            <input name="password" type="password" placeholder="password">
+
+            <button type="submit">Submit</button>
     </form>
 
     <script>
-       const myForm = document.getElementById('myForm');
-       var headers = {}
-       
-       myForm.addEventListener('submit', function (e){
-            e.preventDefault();
+        const formEl = document.querySelector('.form');
 
-            const formData = new FormData(this);
+        formEl.addEventListener('submit', () => {
+            event.preventDefault();
 
-            fetch('http://localhost:8080/reservation', {
-                method: 'post',
+            const formData = new FormData(formEl);
+            const data = Object.fromEntries(formData)
+
+            console.log(data);
+
+            fetch('http://localhost:8080/reservations', {
+                method: 'POST',
                 mode: 'no-cors',
-                body: formData
-            }).then(function (response) {
-                return response.text();
-            }).then(function (text) {
-                console.log(text);
-            }).catch(function (error) {
-                console.error(error);
-            }) 
-       });
+                headers: {
+                    'Content-Typ' : 'application/json'
+                },
+                body: JSON.stringify(data) 
+            }).catch(error => console.log(error))
+        })
     </script>
 </body>
 </html>
